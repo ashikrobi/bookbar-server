@@ -1,11 +1,19 @@
+//middleware imports
+const cors = require('cors');
+
 //variables for express
 const express = require('express')
 const app = express()
 const port = 5000
 //variables for mongodb
+const pass = "YQ15cG41NBp2dSQP";
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://<username>:<password>@cluster0.73puo.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = "mongodb+srv://serverAdmin:YQ15cG41NBp2dSQP@cluster0.73puo.mongodb.net/full-stack?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+//use middleware
+app.use(cors());
+app.use(express.json());
 
 //configure server with express
 app.get('/', (req, res) => {
@@ -18,7 +26,26 @@ app.listen(port, () => {
 
 //connect to mongodb
 client.connect(err => {
-  const collection = client.db("test").collection("devices");
-  // perform actions on the collection object
-  client.close();
+  const books = client.db("full-stack").collection("books");
+  console.log('connection to db successful')
+  
+//post data to mongodb
+  app.post('/addBooks', (req, res) => {
+    const newBook = req.body;
+    console.log(newBook);
+    books.insertOne(newBook)
+    .then(result => {
+      res.send(result.insertedCount > 0)
+    })
+  })
+
+  
+//read data from mongodb
+  app.get('/books', (req, res) => {
+    books.find({})
+    .toArray((err, documents) => {
+      res.send(documents);
+    })
+  })
+
 });
