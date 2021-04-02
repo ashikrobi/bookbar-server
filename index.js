@@ -1,5 +1,6 @@
 //middleware imports
 const cors = require('cors');
+require('dotenv').config()
 
 //variables for express
 const express = require('express')
@@ -8,7 +9,7 @@ const port = 5000
 //variables for mongodb
 const pass = "YQ15cG41NBp2dSQP";
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://serverAdmin:YQ15cG41NBp2dSQP@cluster0.73puo.mongodb.net/full-stack?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.73puo.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 //use middleware
