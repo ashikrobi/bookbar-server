@@ -18,7 +18,7 @@ app.use(express.json());
 
 //configure server with express
 app.get('/', (req, res) => {
-  res.send('Searver side of bookbar!')
+  res.send('Server side of bookbar!')
 })
 
 app.listen(process.env.PORT || port, () => {
